@@ -7,7 +7,7 @@ namespace BulletHell;
 internal class Model
 {
     public event Action GameOver;
-    public List<Attack> InactiveAttacks { get; private set; }
+    public List<Attack> InactiveAttacks { get; private set; } = new(64);
     public List<(float, Attack)> ActiveAttacks { get; private set; } = new(64);
     public VectorV PlayerPosition { get; private set; } = new VectorV(960,540);
     public Timer GameLogicTimer { get; private set; }
@@ -23,6 +23,7 @@ internal class Model
     private MeshOrbAttackFactory meshOrbAttackFactory;
     private FollowingOrbAttackFactory followingOrbAttackFactory;
     private RectangleAttackFactory rectangleAttackFactory;
+    private CircleOrbAttackFactory circleOrbAttackFactory;
     private int GameLogicTimerInterval = 16;
 
     #region Singlton
@@ -40,13 +41,16 @@ internal class Model
 
     public void Init()
     {
-        InactiveAttacks = [new CircleOrbAttack(10, VectorV.Zero, 10,50, (float f) => new VectorV(f,f),(float f) => 100, 8600, 1000)];
         GameOver += OnGameOver;
         Stopwatch = new Stopwatch();
         GameLogicTimer = new Timer() { Interval = GameLogicTimerInterval };
         GameLogicTimer.Tick += new EventHandler(Update);
         Stopwatch.Start();
         GameLogicTimer.Start();
+
+        circleOrbAttackFactory = new CircleOrbAttackFactory(
+            (10,VectorV.Zero, 10, (float f) => new VectorV(20 * f, 20 * f), (float f) => 100, 0)
+            );
 
         meshOrbAttackFactory = new MeshOrbAttackFactory(150, 
             (6, new VectorV(0,700), (float f) => new VectorV(0,-f), 20,3,10),
@@ -77,6 +81,7 @@ internal class Model
         InactiveAttacks.AddRange(followingOrbAttackFactory.CreateAttacks());
         InactiveAttacks.AddRange(meshOrbAttackFactory.CreateAttacks());
         InactiveAttacks.AddRange(rectangleAttackFactory.CreateAttacks());
+        InactiveAttacks.AddRange(circleOrbAttackFactory);
         InactiveAttacks.Sort();
     }
 

@@ -3,12 +3,9 @@
 internal class CircleOrbAttack : OrbAttack
 {
     private Func<float, float> increasingRadiusFunction;
-    private float attackMovementSpeed;
-    public CircleOrbAttack(int orbsCount, VectorV startPos, float orbsMovementSpeed,
-        float attackMovementSpeed, Func<float, VectorV> offsetFunction, Func<float, float> inflateRadiusFunction, float startTime, float duration)
+    public CircleOrbAttack(int orbsCount, VectorV startPos, float orbsMovementSpeed, Func<float, VectorV> offsetFunction, Func<float, float> inflateRadiusFunction, float startTime, float duration)
         : base(orbsCount, orbsMovementSpeed, startPos, offsetFunction, startTime, duration)
     {
-        this.attackMovementSpeed = attackMovementSpeed;
         this.increasingRadiusFunction = inflateRadiusFunction;
         for (int i = 0; i < orbsCount; i++)
         {
@@ -25,7 +22,7 @@ internal class CircleOrbAttack : OrbAttack
     public override void Move()
     {
         orbsMovementSum += orbsMovementSpeed;
-        AttackMovementSum += attackMovementSpeed;
+        AttackMovementSum += 1;
 
         for (int i = 0; i < Orbs.Length; i++)
         {
