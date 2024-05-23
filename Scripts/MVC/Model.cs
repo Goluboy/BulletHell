@@ -81,7 +81,7 @@ internal class Model
         InactiveAttacks.AddRange(followingOrbAttackFactory.CreateAttacks());
         InactiveAttacks.AddRange(meshOrbAttackFactory.CreateAttacks());
         InactiveAttacks.AddRange(rectangleAttackFactory.CreateAttacks());
-        InactiveAttacks.AddRange(circleOrbAttackFactory);
+        InactiveAttacks.AddRange(circleOrbAttackFactory.CreateAttacks());
         InactiveAttacks.Sort();
     }
 
