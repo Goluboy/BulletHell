@@ -7,14 +7,16 @@ namespace BulletHell;
 internal class Model
 {
     public event Action GameOver;
-    public List<Attack> InactiveAttacks { get; private set; } = new(64);
+    public List<Attack> InactiveAttacks { get; private set; }
     public List<(float, Attack)> ActiveAttacks { get; private set; } = new(64);
     public VectorV PlayerPosition { get; private set; } = new VectorV(960,540);
     public Timer GameLogicTimer { get; private set; }
     public Stopwatch Stopwatch { get; private set; }
-
-    private VectorV playerDir => Controller.GetInstance().PlayerDir;
     public bool IsCollide => ActiveAttacks.Any(x => x.Item2.IsCollide(PlayerPosition));
+
+    private int width => View.GetInstance().ScreenWidth;
+    private int height => View.GetInstance().ScreenHeight;
+    private VectorV playerDir => Controller.GetInstance().PlayerDir;
 
     private readonly float playerSpeed = 8f;
 
@@ -38,6 +40,7 @@ internal class Model
 
     public void Init()
     {
+        InactiveAttacks = [new CircleOrbAttack(10, VectorV.Zero, 10,50, (float f) => new VectorV(f,f),(float f) => 100, 8600, 1000)];
         GameOver += OnGameOver;
         Stopwatch = new Stopwatch();
         GameLogicTimer = new Timer() { Interval = GameLogicTimerInterval };
@@ -55,32 +58,20 @@ internal class Model
             );
 
         followingOrbAttackFactory = new FollowingOrbAttackFactory(
-            (50, new VectorV(1920, 1080), 6000),
-            (50, new VectorV(1920, 1080), 6010),
-            (50, new VectorV(1920, 1080), 6020),
-            (50, new VectorV(1920, 1080), 6030),
-            (50, new VectorV(0,0), 7300),
-            (50, new VectorV(0, 0), 7310),
-            (50, new VectorV(0, 0), 7320),
-            (50, new VectorV(0, 0), 7330),
-            (50, new VectorV(1920, 1080), 8600),
-            (50, new VectorV(1920, 1080), 8610),
-            (50, new VectorV(1920, 1080), 8620),
-            (50, new VectorV(1920, 1080), 8630),
-            (50, new VectorV(0, 0), 8600),
-            (50, new VectorV(0, 0), 8610),
-            (50, new VectorV(0, 0), 8620),
-            (50, new VectorV(0, 0), 8630));
+            (4,50, new VectorV(width, height), 6000),
+            (4, 50, new VectorV(0,0), 7300),
+            (4, 50, new VectorV(width, height), 8600),
+            (1000,50, new VectorV(0, 0), 8600));
 
         rectangleAttackFactory = new RectangleAttackFactory(
             (400, 400, 15, new VectorV(0, -400), (float f) => new VectorV(0, f), 6000, 1050),
-            (400, 400, 15, new VectorV(1520, -400), (float f) => new VectorV(0, f), 6000, 1050),
-            (400, 400, 15, new VectorV(1520, 1580), (float f) => new VectorV(0, -f), 7300, 1050),
-            (400, 400, 15, new VectorV(0, 1180), (float f) => new VectorV(0, -f), 7300, 1050),
+            (400, 400, 15, new VectorV(width - 400, -400), (float f) => new VectorV(0, f), 6000, 1050),
+            (400, 400, 15, new VectorV(width - 400, height - 400), (float f) => new VectorV(0, -f), 7300, 1050),
+            (400, 400, 15, new VectorV(0, height + 100), (float f) => new VectorV(0, -f), 7300, 1050),
             (400, 400, 15, new VectorV(0, -400), (float f) => new VectorV(0, f), 8600, 1050),
-            (400, 400, 15, new VectorV(1520, -400), (float f) => new VectorV(0, f), 8600, 1050),
-            (400, 400, 15, new VectorV(1520, 1580), (float f) => new VectorV(0, -f), 8600, 1050),
-            (400, 400, 15, new VectorV(0, 1180), (float f) => new VectorV(0, -f), 8600, 1050));
+            (400, 400, 15, new VectorV(width - 400, -400), (float f) => new VectorV(0, f), 8600, 1050),
+            (400, 400, 15, new VectorV(width - 400, height + 400), (float f) => new VectorV(0, -f), 8600, 1050),
+            (400, 400, 15, new VectorV(0, height + 100), (float f) => new VectorV(0, -f), 8600, 1050));
 
 
         InactiveAttacks.AddRange(followingOrbAttackFactory.CreateAttacks());
