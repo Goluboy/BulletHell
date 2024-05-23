@@ -1,6 +1,6 @@
 ﻿namespace BulletHell
 {
-    partial class Form1
+    partial class BulletHell
     {
         /// <summary>
         ///  Required designer variable.

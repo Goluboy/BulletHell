@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Timer = System.Windows.Forms.Timer;
 
 namespace BulletHell;

@@ -2,7 +2,7 @@ using System.Media;
 
 namespace BulletHell;
 
-public partial class Form1 : Form
+public partial class BulletHell : Form
 {
     private readonly Model model = Model.GetInstance();
     private readonly View view = View.GetInstance();
@@ -12,7 +12,7 @@ public partial class Form1 : Form
     private SoundPlayer soundPlayer = new SoundPlayer(Assets1._467339_At_the_Speed_of_Light_FINA);
 
 
-    public Form1()
+    public BulletHell()
     {
         InitializeComponent();
         model.GameOver += OnGameOver;
