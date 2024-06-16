@@ -64,7 +64,7 @@ internal class Model
             (4,50, new VectorV(width, height), 6000),
             (4, 50, new VectorV(0,0), 7300),
             (4, 50, new VectorV(width, height), 8600),
-            (1000,50, new VectorV(0, 0), 8600));
+            (1000,50, new VectorV(width / 2, height / 2), 8600));
 
         rectangleAttackFactory = new RectangleAttackFactory(
             (400, 400, 15, new VectorV(0, -400), (float f) => new VectorV(0, f), 6000, 1050),
@@ -75,7 +75,6 @@ internal class Model
             (400, 400, 15, new VectorV(width - 400, -400), (float f) => new VectorV(0, f), 8600, 1050),
             (400, 400, 15, new VectorV(width - 400, height + 400), (float f) => new VectorV(0, -f), 8600, 1050),
             (400, 400, 15, new VectorV(0, height + 100), (float f) => new VectorV(0, -f), 8600, 1050));
-
 
         InactiveAttacks.AddRange(followingOrbAttackFactory.CreateAttacks());
         InactiveAttacks.AddRange(meshOrbAttackFactory.CreateAttacks());
